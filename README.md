@@ -18,11 +18,7 @@ To control an electrical device remotely through a cloud platform using MQTT com
 - Cloud Platform such as Blynk or ThingSpeak
 - MQTT Broker / MQTT Service
 
-# Circuit Diagram
 
----
-To upload
----
 
 # Procedure
 
@@ -91,13 +87,66 @@ To upload
 7. Record the commands and corresponding device states.
 
 # Program
+```
+#include <WiFi.h>
+  #include <PubSubClient.h>
 
+  const char* ssid = "Wokwi-GUEST";   // Wokwi default WiFi
+  const char* password = "";          // No password
+  const char* mqtt_server = "broker.hivemq.com"; // Public MQTT broker
+
+  WiFiClient espClient;
+  PubSubClient client(espClient);
+
+  const int ledPin = 2;
+
+  void setup_wifi() {
+       delay(10);
+ WiFi.begin(ssid, password);
+ while (WiFi.status() != WL_CONNECTED) {
+delay(500);
+ }
+  }
+
+  void callback(char* topic, byte* payload, unsigned int length) {
+ if (payload[0] == '1') {
+digitalWrite(ledPin, HIGH); // Turn LED ON
+    } else {
+digitalWrite(ledPin, LOW);  // Turn LED OFF
+    }
+  }
+
+  void reconnect() {
+     while (!client.connected()) {
+      if (client.connect("ESP32Client")) {
+        client.subscribe("iot/device/control"); // Subscribe to topic
+      } else {
+        delay(5000);
+      }
+          }
+  }
+
+  void setup() {
+    pinMode(ledPin, OUTPUT);
+       setup_wifi();
+    client.setServer(mqtt_server, 1883);
+    client.setCallback(callback);
+  }
+
+  void loop() {
+    if (!client.connected()) {
+      reconnect();
+ }
+    client.loop();
+     }
+```
 
 
 > **Note:** The above program is written for an **ESP32** using the `WiFi.h` library. Replace the Wi-Fi credentials, MQTT broker address, and MQTT topic with the values used in the laboratory setup.
 
 # Observation
 
+<img width="1535" height="733" alt="image" src="https://github.com/user-attachments/assets/23442659-31d9-4bfb-b0f9-aadd2153424b" />
 
 # Result
 
