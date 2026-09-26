@@ -147,6 +147,7 @@ digitalWrite(ledPin, LOW);  // Turn LED OFF
 # Observation
 
 <img width="1535" height="733" alt="image" src="https://github.com/user-attachments/assets/23442659-31d9-4bfb-b0f9-aadd2153424b" />
+<img width="731" height="1600" alt="WhatsApp Image 2026-09-26 at 10 44 37 AM" src="https://github.com/user-attachments/assets/09baeb3b-d112-4319-9186-4e7713e2df0d" />
 
 # Result
 
